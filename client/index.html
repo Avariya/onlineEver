@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="language" content="en"/>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <title>demo chat</title>
+    <script>
+        var ws;
+        $(function () {
+
+            $('#textfield').bind('input propertychange', function() {
+                saveText();
+            });
+
+            wsStart();
+        });
+
+
+        function wsStart() {
+            ws = new WebSocket("ws://127.0.0.1:8000/");
+            ws.onopen = function () {
+                console.log('new user connecting');
+            };
+            ws.onclose = function () {
+                console.log('someone leave page');
+                setTimeout(wsStart, 1000);
+            };
+            ws.onmessage = function (evt) {
+                console.log('need to update text');
+                $('#textfield').val(evt.data);
+            };
+        }
+
+        function saveText() {
+            var txtfld = $('#textfield');
+            console.log('sanding new text: '+txtfld.val());
+            ws.send(txtfld.val());
+        }
+
+    </script>
+</head>
+
+<body>
+
+<textarea id="textfield" style="width: 1600px; height: 1000px;"></textarea>
+<!--
+    <div id="chat" style="overflow: auto;"><p>Система: пожалуйста подождите, идёт соединение с сервером.</p></div>
+    <div class="navbar-fixed-bottom">
+        <form onsubmit="ws.send($('input').val()); $('input').val(''); return false; ">
+            <input id="input" type="text" class="form-control" placeholder="Text input" style="width: 100%;" maxlength="140" autocomplete="off">
+        </form>
+    </div>
+-->
+</body>
+</html>
