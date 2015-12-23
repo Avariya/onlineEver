@@ -10,3 +10,5 @@ Start
 php -f server/index.php
 
 Then load client/index.html in your favourite browser and write what you want
+
+Linux only
