@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-include_once('vendor/autoload.php');
+require_once('vendor/autoload.php');
 
 if (empty($argv[1]) || !in_array($argv[1], array('start', 'stop', 'restart'))) {
     die("не указан параметр (start|stop|restart)\r\n");
@@ -17,5 +17,5 @@ $config = array(
 
 spl_autoload_register(function ($class) { include $class . '.php'; });
 
-$WebsocketServer = new WebsocketServer($config);
+$WebsocketServer = new morozovsk\websocket\Server($config);
 call_user_func(array($WebsocketServer, $argv[1]));
